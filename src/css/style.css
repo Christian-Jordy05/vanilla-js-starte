@@ -1,0 +1,17 @@
+.TITULO{
+    display: flex;
+   justify-content: center;
+
+}
+#inputAgre{
+width: 120px;
+height: 30px;
+}
+
+#boton{
+    width: 120px;
+    height: 30px;
+    color: white;
+    border: transparent;
+    background-color: rgb(174, 0, 255);
+}
