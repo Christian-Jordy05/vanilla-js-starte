@@ -1,0 +1,54 @@
+.TITULO{
+    display: flex;
+   justify-content: center;
+
+}
+#inputAgre{
+width: 170px;
+height: 40px;
+}
+
+#boton{
+    width: 170px;
+    height: 40px;
+    color: white;
+    border: transparent;
+    background-color: rgb(174, 0, 255);
+}
+#titulo2{
+    margin-left: 75%;
+    font-size: 25px;
+    margin-top: -10;
+    position: absolute;
+    margin-top: -50px;
+}
+#contador{
+    text-align: center;
+    height: 100px;
+    width: 100px;
+    border-radius: 50% ;
+    border: 2px solid black;
+    margin-left: 90%;
+    margin-top: -90px;
+}
+#num{
+    display: flex;
+    justify-content: center;
+    margin-top: 35px;
+    font-size: 25px;
+   
+}
+#conteinerDeLasTareas{
+    border: 2px solid black;
+    height: 450px;
+    
+    
+}
+#texCon{
+    display: flex;
+    margin-top: 15%;
+    justify-content: center;
+    margin-bottom: 40%;
+    font-size: 40px;
+    
+}
