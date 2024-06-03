@@ -12,15 +12,14 @@ botonAgrega.addEventListener("click" , function(){
         /*aqui por si el usurio el da ingresar tarea y si no tiene texto le manda un alert 
         diciendo que no se puede dejar blanco*/
         let texAlert2 = document.createElement("h2")
-        texAlert2 = "no se puede dejar sin texto"
-        console.log(texAlert2);
-        
+        texAlert2.style.color = "red"
+        texAlert2.textContent = "no se puede dejar sin texto"
+        texAlert.appendChild(texAlert2)
     } else {
-      
-
-        // let tarea = document.createElement("div")
-        // tarea.style.backgroundColor = "red"
-        // let hola = conteinerDeLasTareas.appendChild(tarea)
-        // console.log(hola);
+        let tarea = document.createElement("div")
+        let hola = conteinerDeLasTareas.appendChild(tarea)
+        tarea.appendChild(texCon)
+        tarea.innerHTML = inputAgre.value
+        console.log(hola);
     }
 })
