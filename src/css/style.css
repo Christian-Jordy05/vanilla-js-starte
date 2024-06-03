@@ -41,9 +41,10 @@ height: 40px;
 #conteinerDeLasTareas{
     border: 2px solid black;
     height: 450px;
-    
+    overflow: scroll;
     
 }
+
 #texCon{
     display: flex;
     margin-top: 15%;
@@ -51,4 +52,12 @@ height: 40px;
     margin-bottom: 40%;
     font-size: 40px;
     
+}
+
+.divDeTarea{
+    height: 100px;
+    width: 700px;
+    margin-top: 30px ;
+    margin-left: 20px;
+    border: solid black 2px;
 }
