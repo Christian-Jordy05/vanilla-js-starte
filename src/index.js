@@ -15,11 +15,17 @@ botonAgrega.addEventListener("click" , function(){
         texAlert2.style.color = "red"
         texAlert2.textContent = "no se puede dejar sin texto"
         texAlert.appendChild(texAlert2)
+        setTimeout(() => {
+            texAlert2.innerHTML = ""
+        }, 1000);
+
+
     } else {
         let tarea = document.createElement("div")
+        tarea.className = "divDeTarea"
         let hola = conteinerDeLasTareas.appendChild(tarea)
         tarea.appendChild(texCon)
         tarea.innerHTML = inputAgre.value
-        console.log(hola);
     }
 })
+
