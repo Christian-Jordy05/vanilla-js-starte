@@ -52,12 +52,38 @@ height: 40px;
     margin-bottom: 40%;
     font-size: 40px;
     
+    
+}
+.texAlert2{
+    color: red;
+    position: absolute;
 }
 
 .divDeTarea{
     height: 100px;
-    width: 700px;
+    width: 1200px;
     margin-top: 30px ;
-    margin-left: 20px;
+    margin-left: 30px;
     border: solid black 2px;
+}
+
+.checkbox{
+    width:30px;
+    height:30px;
+    margin-top: 30px;
+    margin-left: 20px;
+    
+}
+#texto{
+    font-size:30px;
+    margin-left: 350px;
+    margin-top: -43px;
+    
+    width: 650px;
+}
+#elimiar{
+    
+    margin-left: 1100px;
+    margin-top: -400px;
+    
 }
