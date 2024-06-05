@@ -48,7 +48,7 @@ botonAgrega.addEventListener("click", function () {
 
         // Agregar la imagen de eliminar
         let eliminar = document.createElement("img");
-        eliminar.src = "img/basura.png"; // Reemplaza con la ruta de tu imagen
+        eliminar.src = "img/basura.png"; 
         eliminar.id = "elimiar";
         eliminar.addEventListener("click", function () {
             tarea.remove();
