@@ -1,4 +1,5 @@
- export let guardarTarea = async (tarea) => {
+// Guardar tarea
+export let guardarTarea = async (tarea) => {
     try {
         const response = await fetch("http://localhost:3000/api/task", {
             method: 'POST',
@@ -9,6 +10,7 @@
                 task: tarea
             })
         });
+        
         const data = await response.json();
         console.log(data);
     } catch (error) {
@@ -16,8 +18,8 @@
     }
 }
 
-
-  export let obtenerTareas = async () => {
+// Obtener tareas
+export let obtenerTareas = async () => {
     try {
         const response = await fetch("http://localhost:3000/api/task", {
             method: 'GET',
@@ -32,5 +34,20 @@
         console.log(error);
         return [];
     }
-};
+}
 
+// Borrar tarea
+export let borrarTarea = async (id) => {
+    try {
+        const response = await fetch(`http://localhost:3000/api/task/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        const data = await response.json();
+        console.log(data);
+    } catch (error) {
+        console.log(error);
+    }
+}
