@@ -1,5 +1,5 @@
 // Guardar tarea
-export let guardarTarea = async (tarea) => {
+export let guardarTarea = async (tarea, estadoCheckbox = "incompleto") => {
     try {
         const response = await fetch("http://localhost:3000/api/task", {
             method: 'POST',
@@ -7,10 +7,34 @@ export let guardarTarea = async (tarea) => {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                task: tarea
+                task: tarea,
+                checkbox: estadoCheckbox
             })
         });
-        
+
+        const data = await response.json();
+        console.log(data);
+        return data;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+// Actualiza el API
+export let actualizarTarea = async (id, estadoCheckbox) => {
+    try {
+        const estado = estadoCheckbox ? "completado" : "incompleto";  //esto muestra en el API que si el chek 
+        //esta marcado si o no  aunque esto no era necesario creo profe
+        const response = await fetch(`http://localhost:3000/api/task/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                checkbox: estado
+            })
+        });
+
         const data = await response.json();
         console.log(data);
     } catch (error) {
@@ -18,7 +42,7 @@ export let guardarTarea = async (tarea) => {
     }
 }
 
-// Obtener tareas
+// Obtener del tareas del API
 export let obtenerTareas = async () => {
     try {
         const response = await fetch("http://localhost:3000/api/task", {
@@ -29,7 +53,7 @@ export let obtenerTareas = async () => {
         });
         const data = await response.json();
         console.log(data);
-        return data; // Retornar las tareas obtenidas
+        return data;
     } catch (error) {
         console.log(error);
         return [];
