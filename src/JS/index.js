@@ -1,10 +1,11 @@
-import { guardarTarea, obtenerTareas, borrarTarea } from "./API.js";
+import { guardarTarea, obtenerTareas, borrarTarea, actualizarTarea } from "./API.js";
 
 let botonAgrega = document.getElementById("boton");
 let conteinerDeLasTareas = document.getElementById("conteinerDeLasTareas");
 let inputAgre = document.getElementById("inputAgre");
 let texCon = document.getElementById("texCon");
 let texAlert = document.getElementById("texAlert");
+let numDeconta = document.getElementById("num");
 
 // Función para verificar y actualizar el texto de "texCon"
 function actualizarTexCon() {
@@ -16,29 +17,49 @@ function actualizarTexCon() {
     }
 }
 
-// Función para mostrar las tareas que estan en la API
+// Funcion para verificar bien los checkbox
+function actualizarContador() {
+    let checkboxes = conteinerDeLasTareas.getElementsByClassName("checkbox");
+    let contador = 0;
+    for (let checkbox of checkboxes) {
+        if (checkbox.checked) {
+            contador++;
+        }
+    }
+    numDeconta.textContent = contador;
+}
+
+// Función para mostrar las tareas que están en la API
 async function mostrarTareas() {
     let tareas = await obtenerTareas();
     tareas.forEach(tareaData => {
-        agregarTarea(tareaData.task, tareaData.id);
+        agregarTarea(tareaData.task, tareaData.id, tareaData.checkbox === 'completado');
     });
-    // Actualizar el texto de "texCon"
     actualizarTexCon();
+    actualizarContador();
 }
 
 // Función para agregar la tarea en la página y API
-function agregarTarea(textoTarea, idTarea) {
+function agregarTarea(textoTarea, idTarea, boxtare = false) {
     let tarea = document.createElement("div");
     tarea.className = "divDeTarea";
-    tarea.dataset.id = idTarea; 
+    tarea.dataset.id = idTarea;
     conteinerDeLasTareas.insertBefore(tarea, conteinerDeLasTareas.firstChild);
 
     // Agregar el checkbox
     let checkbox = document.createElement("input");
     checkbox.type = "checkbox";
     checkbox.className = "checkbox";
+    checkbox.checked = boxtare;
     tarea.appendChild(checkbox);
 
+    checkbox.addEventListener("change", async () => {
+        try {
+            await actualizarTarea(idTarea, checkbox.checked);
+            actualizarContador();
+        } catch (error) {
+        }
+    });
     // Agregar el texto de la tarea
     let texto = document.createElement("p");
     texto.id = "texto";
@@ -49,26 +70,27 @@ function agregarTarea(textoTarea, idTarea) {
     let eliminar = document.createElement("img");
     eliminar.src = "img/basura.png";
     eliminar.id = "elimiar";
+
+    //aqui para eliminar la tarea con la img
     eliminar.addEventListener("click", async () => {
         try {
             await borrarTarea(idTarea);
             tarea.remove();
             actualizarTexCon();
+            actualizarContador();
         } catch (error) {
-            console.error("Error al borrar la tarea:", error);
+            
         }
     });
+    //esto para actulizar alguna cosa que hubo 
     tarea.appendChild(eliminar);
-
-    // Actualizar el texto de "texCon"
     actualizarTexCon();
-    
+    actualizarContador();
 }
 
-// Función para agregar los div de tarea
+// boton para agregar los div de tarea y agregar todo en la API 
 botonAgrega.addEventListener("click", async function () {
     if (inputAgre.value === "") {
-        // Si el usuario intenta agregar una tarea sin texto, se muestra un texto que no puede
         let texAlert2 = document.createElement("p");
         texAlert2.className = "texAlert2";
         texAlert2.textContent = "DEBES DE INGRESAR TEXTO";
@@ -77,21 +99,19 @@ botonAgrega.addEventListener("click", async function () {
             texAlert2.remove();
         }, 1000);
     } else {
-        // Aquí me agrega la tarea que fue guardada en el API
         let textoTarea = inputAgre.value;
         try {
             let tareaGuardada = await guardarTarea(textoTarea);
             if (tareaGuardada) {
-                agregarTarea(textoTarea, tareaGuardada.id);
+                agregarTarea(textoTarea, tareaGuardada.id, tareaGuardada.checkbox );
             } else {
-                throw new Error("Error al guardar la tarea en el servidor.");
+                
             }
         } catch (error) {
             console.error(error);
         }
-        // Limpiar el input después de agregar la tarea
         inputAgre.value = "";
-        location. reload()
+        location.reload();
     }
 });
 
