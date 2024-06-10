@@ -81,10 +81,28 @@ height: 40px;
     margin-left: 350px;
     margin-top: -43px;
     width: 650px;
+    font-family: 'Times New Roman', Times, serif;
 }
 #elimiar{
     
     margin-left: 1100px;
     margin-top: -400px;
     
+}
+.InputDesobre{
+    font-family: 'Times New Roman', Times, serif;
+    font-size:30px;
+    height: 30px;
+    width: 300px;
+    margin-left: 347px;
+    margin-top: -44px;
+  
+    position: absolute;
+    width: 650px;
+    outline:none ;
+    border: white;
+}
+
+.InputDesobre::placeholder{
+    font-size: 20px;
 }
