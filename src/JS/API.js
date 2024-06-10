@@ -42,6 +42,26 @@ export let actualizarTarea = async (id, estadoCheckbox) => {
     }
 }
 
+// actaliza el texto de la tarea
+export let actualizarTextoTarea = async (id ,nuevoTexto) => {
+    try {
+        const response = await fetch(`http://localhost:3000/api/task/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                task: nuevoTexto
+            })
+        });
+
+        const data = await response.json();
+        console.log(data);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 // Obtener del tareas del API
 export let obtenerTareas = async () => {
     try {

@@ -1,4 +1,4 @@
-import { guardarTarea, obtenerTareas, borrarTarea, actualizarTarea } from "./API.js";
+import { guardarTarea, obtenerTareas, borrarTarea, actualizarTarea, actualizarTextoTarea } from "./API.js";
 
 let botonAgrega = document.getElementById("boton");
 let conteinerDeLasTareas = document.getElementById("conteinerDeLasTareas");
@@ -33,18 +33,18 @@ function actualizarContador() {
 async function mostrarTareas() {
     let tareas = await obtenerTareas();
     tareas.forEach(tareaData => {
-        agregarTarea(tareaData.task, tareaData.id, tareaData.checkbox === 'completado');
+        agregarTarea(tareaData.task, tareaData.id, tareaData.checkbox === 'completado');        
     });
     actualizarTexCon();
     actualizarContador();
 }
 
 // Función para agregar la tarea en la página y API
-function agregarTarea(textoTarea, idTarea, boxtare = false) {
+function agregarTarea(textoTarea, idTarea, boxtare) {
     let tarea = document.createElement("div");
     tarea.className = "divDeTarea";
     tarea.dataset.id = idTarea;
-    conteinerDeLasTareas.insertBefore(tarea, conteinerDeLasTareas.firstChild);
+    conteinerDeLasTareas.appendChild(tarea, conteinerDeLasTareas);
 
     // Agregar el checkbox
     let checkbox = document.createElement("input");
@@ -52,7 +52,6 @@ function agregarTarea(textoTarea, idTarea, boxtare = false) {
     checkbox.className = "checkbox";
     checkbox.checked = boxtare;
     tarea.appendChild(checkbox);
-
     checkbox.addEventListener("change", async () => {
         try {
             await actualizarTarea(idTarea, checkbox.checked);
@@ -66,12 +65,43 @@ function agregarTarea(textoTarea, idTarea, boxtare = false) {
     texto.textContent = textoTarea;
     tarea.appendChild(texto);
 
+    // Aqui creo el input que ayuda a sobreescribir la tarea
+    let InputDesobre = document.createElement("input");
+    InputDesobre.type = "text";
+    InputDesobre.className = "InputDesobre"
+   
+    InputDesobre.style.display = "none" // Aqui lo oculto 
+    tarea.appendChild(InputDesobre)
+
+    // Aqui para que cuando le di click al texto aparezca el input y desaparezca el texto
+    texto.addEventListener("dblclick", () => {
+         InputDesobre.placeholder = "INGRESE TEXTO PARA SOBRESCRIBIR LA TAREA"
+        texto.style.display = "none";
+        InputDesobre.style.display = "block";
+        InputDesobre.focus(); //
+    });
+
+    // Esta funcion es para que al darle enter se guarde el cambio
+    InputDesobre.addEventListener("keypress", async (event) => {
+        if (event.key == "Enter") {
+            let nuevoTexto = InputDesobre.value;
+            try {
+                await actualizarTextoTarea(idTarea, nuevoTexto);
+                texto.textContent = nuevoTexto;
+                texto.style.display = "block"; // Mostrar el texto
+                InputDesobre.style.display = "none"; // Ocultar el input
+            } catch (error) {
+                console.error(error);
+            }
+        }
+    });
+
     // Agregar la imagen de eliminar
     let eliminar = document.createElement("img");
     eliminar.src = "img/basura.png";
     eliminar.id = "elimiar";
 
-    //aqui para eliminar la tarea con la img
+    // Aqui para eliminar la tarea con la img
     eliminar.addEventListener("click", async () => {
         try {
             await borrarTarea(idTarea);
@@ -79,16 +109,16 @@ function agregarTarea(textoTarea, idTarea, boxtare = false) {
             actualizarTexCon();
             actualizarContador();
         } catch (error) {
-            
         }
     });
-    //esto para actulizar alguna cosa que hubo 
+
+    // Esto para actualizar alguna cosa que hubo 
     tarea.appendChild(eliminar);
     actualizarTexCon();
     actualizarContador();
 }
 
-// boton para agregar los div de tarea y agregar todo en la API 
+// Boton para agregar los div de tarea y agregar todo en la API 
 botonAgrega.addEventListener("click", async function () {
     if (inputAgre.value === "") {
         let texAlert2 = document.createElement("p");
@@ -103,9 +133,7 @@ botonAgrega.addEventListener("click", async function () {
         try {
             let tareaGuardada = await guardarTarea(textoTarea);
             if (tareaGuardada) {
-                agregarTarea(textoTarea, tareaGuardada.id, tareaGuardada.checkbox );
-            } else {
-                
+                agregarTarea(textoTarea, tareaGuardada.id, tareaGuardada.checkbox);
             }
         } catch (error) {
             console.error(error);
@@ -115,9 +143,10 @@ botonAgrega.addEventListener("click", async function () {
     }
 });
 
-actualizarTexCon();
+// Muestra las cosas en la pag
 mostrarTareas();
 
+// Esta funcion para que el input me pueda leer el "enter"
 inputAgre.addEventListener("keypress", (event) => {
     if (event.key == "Enter") {
         botonAgrega.click();
